@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Turntable from '../components/Turntable.vue'
 import { ref, reactive, nextTick } from 'vue'
-import func from '../../vue-temp/vue-editor-bridge';
 // import { nextTick } from 'process';
 
 let info = reactive({
@@ -46,13 +45,22 @@ function deleteItem(item) {
   if(info.data.length == 1) return;
   info.data = info.data.filter(i => i.id != item.id);
 }
+
+function deleteOption(item) {
+  if(info.data.length == 1) return;
+  info.data = info.data.filter(i => i.id != item.id);
+}
+
+function getResult(data){
+  
+}
 </script>
 
 <template>
   <main>
     <h1 class="title">中午吃啥</h1>
     <div class="trun-table">
-      <Turntable :data="info.data" />
+      <Turntable :data="info.data" @result="getResult" @delete="deleteOption" />
     </div>
 
     <button @click="addData">增加选项</button>

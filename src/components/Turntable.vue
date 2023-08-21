@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 
 const CIRCLE_ANGLE = 360;
 const BIGSIZE = 24;
@@ -14,6 +14,11 @@ const props = defineProps({
   }
 });
 
+const emit = defineEmits(['result', 'delete']);
+
+const bgDom = ref(null);
+const divDom = ref(null);
+
 // 数据列表
 const prizeList = computed(() => formatPrizeList(props.data));
 
@@ -23,11 +28,11 @@ let gift_id = 3; //中奖ID
 let index = '';//抽中的是第几个奖品
 let isRotating = false; //为了防止重复点击
 let rotateAngle = 0;
-let bgDom: any = null;
-let divDom: any = null;
+
+let result = ref('');
+
 //每个选择增加style
 function formatPrizeList(list) {
-  debugger
   const l = list.length;
   // 计算单个选择所占的角度
   const average = CIRCLE_ANGLE / l; //60
@@ -68,7 +73,8 @@ function formatPrizeList(list) {
 function prizeRoll() {
   if (isRotating) return false;
   gift_id = Math.floor(1 + Math.random() * prizeList.value.length);
-  console.log(prizeList.value[gift_id - 1].name);
+  result = prizeList.value[gift_id - 1].name;
+  console.log(result);
   prizeList.value.forEach((item, i) => {
     if (item.id == gift_id) index = i; //判断中奖的位置
   });
@@ -92,26 +98,27 @@ function rotating() {
     angleList[index] -
     (rotateAngle % CIRCLE_ANGLE);
   rotateAngle = angle;
-  bgDom.style.transform = `rotate(${rotateAngle}deg)`
-  divDom.style.transform = `rotate(${rotateAngle}deg)`
+  bgDom.value.style.transform = `rotate(${rotateAngle}deg)`
+  divDom.value.style.transform = `rotate(${rotateAngle}deg)`
   // 旋转结束后，允许再次触发
   setTimeout(() => {
     isRotating = false;
     console.log('旋转结束')
+    emit('result', { result });
   }, config.duration + 500);
 }
-onMounted(() => {
-  bgDom = document.getElementsByClassName('luckWhellBgMain')[0];
-  divDom = document.getElementsByClassName('prize-list')[0];
-})
+onMounted(() => { })
 
+function deleteItem(item) {
+  emit('delete', item)
+}
 </script>
 
 <template>
   <div class="turntable">
     <div class="luckBg">
       <div class="luckWhellBg">
-        <div class="luckWhellBgMain rotateStyle">
+        <div ref="bgDom" class="luckWhellBgMain rotateStyle">
           <div
             class="luckWhellSector"
             :style="item.style2"
@@ -120,14 +127,16 @@ onMounted(() => {
           ></div>
         </div>
         <div class="wheel-main">
-          <div class="prize-list rotateStyle">
+          <div ref="divDom" class="prize-list rotateStyle">
             <div
               class="prize-item"
               :style="item.style"
               v-for="item in prizeList"
               :key="item.id"
             >
-              <div>{{ item.name }}</div>
+              <div class="prize-name" @click="deleteItem(item)">
+                {{ item.name }}
+              </div>
             </div>
           </div>
           <div class="prize_point" @click="prizeRoll()"></div>
@@ -198,6 +207,9 @@ onMounted(() => {
     text-align: center;
     transform-origin: 50% 100%;
     color: #f83c0e;
+  }
+  .prize-name {
+    cursor: pointer;
   }
   .prize_point {
     position: absolute;
