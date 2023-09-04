@@ -10,10 +10,6 @@ let info = reactive({
   result: ''
 });
 
-let test = reactive([1, 2, 3]);
-let b = test;
-test = [1];
-
 info.data = [{ //可选项
   id: 1,
   name: "麻辣烫"

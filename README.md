@@ -1,3 +1,11 @@
+# 知识点
+
+1. 组件传值prop、emit
+1. 通用组件设计
+1. 基础ref、reactive、compute
+1. 通过ref获取dom元素
+
+
 # private-interestingusundefinedsndefinedsting
 
 This template should help get you started developing with Vue 3 in Vite.
