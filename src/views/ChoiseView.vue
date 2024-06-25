@@ -3,7 +3,7 @@ import Turntable from '../components/Turntable.vue'
 import { ref, reactive, nextTick } from 'vue'
 // import { nextTick } from 'process';
 
-let info = reactive({
+let info: any = reactive({
   data: [],
   id: 5,
   input: '',
@@ -26,7 +26,7 @@ info.data = [{ //可选项
 ];
 
 function addData() {
-  let had = info.data.find(item => item.name == info.input);
+  let had = info.data.find((item: { name: any; }) => item.name == info.input);
   if (!had && info.input) {
     info.data.push({
       id: info.id,
@@ -37,18 +37,18 @@ function addData() {
   }
 }
 
-function deleteItem(item) {
-  if(info.data.length == 1) return;
-  info.data = info.data.filter(i => i.id != item.id);
+function deleteItem(item: { id: any; }) {
+  if (info.data.length == 1) return;
+  info.data = info.data.filter((i: { id: any; }) => i.id != item.id);
 }
 
-function deleteOption(item) {
-  if(info.data.length == 1) return;
-  info.data = info.data.filter(i => i.id != item.id);
+function deleteOption(item: { id: any; }) {
+  if (info.data.length == 1) return;
+  info.data = info.data.filter((i: { id: any; }) => i.id != item.id);
 }
 
-function getResult(data){
-  
+function getResult(data: any) {
+
 }
 </script>
 
@@ -71,22 +71,24 @@ function getResult(data){
 </template>
 
 <style>
-  @media (min-width: 1024px) {
-    .about {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-    }
+@media (min-width: 1024px) {
+  .about {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
   }
-  .title {
-    text-align: center;
-    margin-bottom: 24px;
-  }
-  .trun-table {
-    margin-bottom: 24px;
-  }
-  .delete-item {
-    margin-left: 8px;
-    cursor: pointer;
-  }
-</style>
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.trun-table {
+  margin-bottom: 24px;
+}
+
+.delete-item {
+  margin-left: 8px;
+  cursor: pointer;
+}</style>

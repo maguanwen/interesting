@@ -5,6 +5,15 @@
 1. 基础ref、reactive、compute
 1. 通过ref获取dom元素
 
+# 版本相关信息
+vite需要node版本18+ 
+
+本项目版本 20.10.0 
+
+# 其他
+
+1. build中type-check部分会check项目中类型是否有异常，会报错但是不影响打包结果。
+
 
 # private-interestingusundefinedsndefinedsting
 
